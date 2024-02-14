@@ -15,6 +15,9 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "monaco-editor": "^0.45.0"
+    "@element-plus/theme-chalk": "^2.2.16",
+    "element-plus": "^2.5.5",
+    "monaco-editor": "^0.45.0",
+    "sass": "^1.70.0"
   }
 }

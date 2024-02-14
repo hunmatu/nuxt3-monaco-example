@@ -89,9 +89,9 @@ monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
         }
     ],
 });
-// var modelUri = monaco.Uri.parse("urn:sample-site:tag:service-dependencies.json"); // a made up unique URI for our model
-var modelUri2 = monaco.Uri.parse("urn:dummy:sample-site:tag:service-dependencies.json"); // a made up unique URI for our model
-var modelUri = monaco.Uri.parse(typeof undefined); // a made up unique URI for our model
+var modelUri = monaco.Uri.parse("urn:sample-site:tag:service-dependencies.json"); // a made up unique URI for our model
+// var modelUri2 = monaco.Uri.parse("urn:dummy:sample-site:tag:service-dependencies.json"); // a made up unique URI for our model
+// var modelUri = monaco.Uri.parse(typeof undefined); // a made up unique URI for our model
 
 const onClick = () => {
     // console.log(monaco.editor.getModelMarkers({resource: modelUri}));
