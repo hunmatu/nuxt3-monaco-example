@@ -19,7 +19,7 @@
         <el-button
           v-for="i in 3"
           :key="i"
-          @mouseover="(e) => (buttonRef = e.currentTarget)"
+          @mouseover="(e: MouseEvent) => (buttonRef = e.currentTarget)"
           @click="visible = !visible"
           >Click to open tooltip</el-button
         >
@@ -41,7 +41,7 @@
     </el-tooltip>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 
 const closed = ref(true);
@@ -49,7 +49,7 @@ const mess = ref('');
 
 const buttonRef = ref()
 const tooltipRef = ref()
-const visible = ref(true)
+const visible = ref(false)
 
 </script>
 

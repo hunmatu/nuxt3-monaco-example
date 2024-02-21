@@ -20,7 +20,7 @@ import { ref, provide } from 'vue';
 
 const gene = ref<{hage: string}>({hage: "true"})
 provide('gene', gene.value)
-
+provide('geneRef', gene);
 </script>
 
 <style scoped>
