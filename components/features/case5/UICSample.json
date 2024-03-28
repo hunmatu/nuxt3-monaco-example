@@ -1,0 +1,13 @@
+{
+    "x": 100,
+    "y": 200,
+    "name": "baseTextComponent",
+    "props": [
+        {
+            "key": "label",
+            "value": "label value",
+            "type": "string",
+            "selectableValues": []
+        }
+    ]
+}

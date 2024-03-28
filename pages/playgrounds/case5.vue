@@ -1,9 +1,13 @@
 <template>
+    <el-icon>
+        <Opportunity />
+    </el-icon>
     <h1>Case 5</h1>
     <div>AI + Low Code: suggest funtion !!!</div>
     <p>Global: x = {{ x }}, y = {{ y }}</p>
     <p>Editor: x = {{ editor_x }} , y = {{ editor_y }}</p>
     <p>User Input: {{ userInput }}</p>
+
     <div class="main">
         👇 UI Low Code Editor
         <div class="editor box" @mousemove.self="getMouseXYInElement(event)" @click.self="disabled = false"
@@ -11,14 +15,17 @@
 
             <!-- UIコンポーネント提案ダイアログ -->
             <div v-if=disabled class="dialog">
-                <el-input size="small" v-model="userInput" placeholder="例）「メールアドレスを入力」を入力"
-                    @keypress.enter.native="aiCall()" @input="onSuggest()" />
+                <!-- @keypress.enter.native="aiCall()"  -->
+                <el-input size="small" v-model="userInput" placeholder="例）「メールアドレスを入力」を入力" @input="onSuggestMoc()" />
                 <div size="small" class="suggests-alia" v-for="(suggest, index) in suggests"
                     @keydown.prevent.tab.exact="moveNext">
+                    <el-button class="suggest" size="small" @click="onGenComponentMoc(index)">
+                        <div :style="{ color: '#909090', left: '30px', position: 'absolute' }">{{ suggest.uiType }}
+                        </div>
+                        <div :style="{ left: '120px', position: 'absolute' }">{{ suggest.label }}</div>
+                        <div :style="{ right: '30px', position: 'absolute' }">マッチ度:{{ suggest.match }}%</div>
+                    </el-button>
                     <el-dropdown size="small" placement="right-start">
-                        <el-button class="suggest" size="small" @click="onGenComponent(index)">
-                            {{ suggest.label }}: {{ suggest.match }}%　　<p :style="{color: '#909090'}">discription</p>
-                        </el-button>
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>デフォルトで配置</el-dropdown-item>
@@ -42,7 +49,10 @@
                     :style="{ position: 'absolute', top: component.y + 'px', left: component.x + 'px'}"
                     @drag="moveComponent(component)">
                     <div v-if="component.name === 'baseTextComponent'" class="baseTextComponent">
-                        {{ component.props[0].value }}: <input />
+                        {{ component.props[0].value }}: <el-input placeholder="メールアドレスを入力" size="small" />
+                    </div>
+                    <div v-if="component.name === 'customTextComponent'" class="baseTextComponent">
+                        {{ component.props[0].value }}: <el-input placeholder="携帯のメールアドレスを入力" size="small" />
                     </div>
                     <div v-if="component.name === 'baseLabelComponent'" class="baseLabelComponent">
                         {{ component.props[0].value }}
@@ -54,7 +64,9 @@
         <!-- [「Vue.js」子要素と親要素のクリック イベントを併発しない方法！](https://hasethblog.com/it/programming/vue/5149/) -->
         <!-- [Vue+Element-UIのinputで@keyup.enter.nativeは日本語変換でも発火する - とろろこんぶろぐ](https://oisham.hatenablog.com/entry/2019/03/21/235557) -->
     </div>
+
     <p>AI input: {{ aiInput }}</p>
+    <p>メアド値: <el-input size="small" v-model="userEmail" /></p>
 </template>
 
 <script setup lang="ts">
@@ -72,6 +84,9 @@ const disabled = ref(false)
 
 // ユーザの入力              // AIへの入力            // 選択中のタブ
 const userInput = ref('');  const aiInput = ref(''); const selectSuggest = (0)
+
+// メアド
+const userEmail = ref('nakayama-yu@lakeel.com');
 
 // プリセット自動生成
 interface UIComponent {
@@ -93,6 +108,7 @@ interface UICSuggest {
     label: string,
     name: string,
     match: number,
+    uiType: string,
 } 
 
 const components = ref(new Array<UIComponent>())
@@ -133,25 +149,25 @@ function createPropsAi(input: any): UIComponent{
     return outVo
 }
 
-function onSuggest() {
+// function onSuggest() {
 
-    if(userInput.value){
-        if (suggests.value.length === 0){
-            suggests.value.push({
-                label: 'BaseTextInput',
-                name: 'baseTextComponent',
-                match: 75
-            })
-            suggests.value.push({
-                label: 'BaseTextLabel',
-                name: 'baseLabelComponent',
-                match: 25
-            })
-        }
-    } else {
-        suggests.value = []
-    }
-}
+//     if(userInput.value){
+//         if (suggests.value.length === 0){
+//             suggests.value.push({
+//                 label: 'BaseTextInput',
+//                 name: 'baseTextComponent',
+//                 match: 75
+//             })
+//             suggests.value.push({
+//                 label: 'BaseTextLabel',
+//                 name: 'baseLabelComponent',
+//                 match: 25
+//             })
+//         }
+//     } else {
+//         suggests.value = []
+//     }
+// }
 function onGenComponent(index){
     const suggest = suggests.value[index]
     console.log(suggest)
@@ -169,6 +185,94 @@ function onGenComponent(index){
     ]
 
     const outVo: UIComponent = { x, y, props, name: suggest.name }
+    components.value.push(outVo)
+
+    disabled.value = false
+}
+
+// moc
+function onSuggestMoc(){
+    switch (userInput.value) {
+        case 'メールアドレスの表示':
+            if (suggests.value.length === 0) {
+                suggests.value.push({
+                    label: 'メアド表示用',
+                    name: 'baseLabelComponent',
+                    match: 91,
+                    uiType: '(Custom UI)'
+                })
+                suggests.value.push({
+                    label: 'ラベル',
+                    name: 'baseLabelComponent',
+                    match: 73,
+                    uiType: '(Base UI)'
+                })
+                suggests.value.push({
+                    label: 'テキストボックス',
+                    name: 'baseTextComponent',
+                    match: 47,
+                    uiType: '(Base UI)'
+                });
+            }
+            break;
+        case 'メールアドレスの入力':
+            if (suggests.value.length === 0) {
+                suggests.value.push({
+                    label: 'メアド入力（PC）',
+                    name: 'customTextComponent',
+                    match: 92,
+                    uiType: '(Custom UI)'
+                });
+                suggests.value.push({
+                    label: 'テキストボックス',
+                    name: 'baseTextComponent',
+                    match: 73,
+                    uiType: '(Base UI)'
+                });
+                suggests.value.push({
+                    label: 'メアド表示用',
+                    name: 'baseLabelComponent',
+                    match: 42,
+                    uiType: '(Custom UI)'
+                })
+            }
+            break;
+        default:
+            suggests.value = []
+            break;
+    }
+}
+
+function onGenComponentMoc(index){
+    const suggest = suggests.value[index]
+    console.log(suggest)
+
+    const x = click_x.value
+    const y = click_y.value
+
+    const props: prop[] = [
+        {
+            key: "label",
+            value: userInput.value,
+            type: "string",
+            selectableValues: []
+        },
+    ]
+
+    const outVo: UIComponent = { x, y, props, name: suggest.name }
+    // moc処理
+    switch (suggest.name) {
+        case 'baseLabelComponent':
+            outVo.props[0].value = 'メールアドレス: ' + userEmail.value
+            break;
+        
+        case 'baseTextComponent':
+            outVo.props[0].value = 'メールアドレス'
+            break;
+        default:
+            break;
+    }
+
     components.value.push(outVo)
 
     disabled.value = false
@@ -254,7 +358,7 @@ watch(
 
 .el-input {
     margin: 10px;
-    width: 230px;
+    width:320px;
 }
 
 .box {
@@ -288,6 +392,11 @@ watch(
     color: #909090;
     /* border:2px solid #909090; */
 }
+
+.suggest {
+    width: 100%;
+}
+
 </style>
 
 
