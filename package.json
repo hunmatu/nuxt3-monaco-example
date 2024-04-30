@@ -10,11 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.9.3",
+    "nuxt": "^3.11.1",
     "vue": "^3.4.14",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@element-plus/theme-chalk": "^2.2.16",
     "element-plus": "^2.5.5",
     "monaco-editor": "^0.45.0",
