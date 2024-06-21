@@ -17,8 +17,12 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@element-plus/theme-chalk": "^2.2.16",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
     "element-plus": "^2.5.5",
     "monaco-editor": "^0.45.0",
-    "sass": "^1.70.0"
+    "openai": "^4.51.0",
+    "sass": "^1.70.0",
+    "vue-file-drop": "^0.2.2"
   }
 }
